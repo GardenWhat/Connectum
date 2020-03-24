@@ -1,0 +1,11 @@
+$theme-colors : (
+    "primary": #5677D0,
+    "dark": #15254E
+);
+
+$enable-rounded:   false;
+
+@import "~bootstrap/scss/bootstrap";
+@import "~bootstrap/scss/bootstrap-grid";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins/breakpoints";

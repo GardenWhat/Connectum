@@ -1,0 +1,15 @@
+@import "custom";
+
+body {
+    height: 100vh;
+    background: rgb(78, 78, 168);
+}
+
+#root {
+    height: 100vh;
+}
+
+.router {
+    height: 100%;
+    overflow: auto;
+}
