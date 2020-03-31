@@ -1,6 +1,18 @@
 .tagsearch__suggestions {
+    .suggestion {
+        color: rgb(233, 233, 0);
+        font-weight: bold;
+    }
+
     ul {
         padding: 0;
+    }
+
+    .listgroup-item {
+
+        &:hover {
+            background: darken(white, 20%);
+        }
     }
 
     li {

@@ -1,6 +1,5 @@
-import React, { ReactElement, useState } from 'react';
-import {Button, Alert, AlertProps} from "react-bootstrap";
-import {Router, Link} from "@reach/router";
+import React, { ReactElement, useEffect } from 'react';
+import {Router} from "@reach/router";
 import ChatBox from "./components/Chatbox/Chatbox";
 import Navbar from "./components/Navbar/Navbar";
 import Home from "./pages/Home/Home";
@@ -8,27 +7,54 @@ import Signup from "./pages/Signup/Signup";
 import RouteAuthorizer from "./components/RouteAuthorizer/RouteAuthorizer";
 import "./App.scss";
 import ChatConfigure from './pages/ChatConfigure/ChatConfigure';
+import {RootStoreState} from "./state/store";
+import {attemptLogin, logout, IUserStatus, IUserState} from "./state/actions/User";
+import { connect, ConnectedProps } from 'react-redux';
+import {approveLogin} from "./state/actions/User";
+import {Friends} from "./pages/Friends/Friends";
 
-export interface IUserState {
-  loggedIn: boolean; 
-}
+const mapStateToProps = (state: RootStoreState) => {
+  return ({
+  userData: state.userData
+})};
 
-function App(): ReactElement  {
-  const [state, setState] = useState<IUserState>({loggedIn: true});
+const mapDispatchToProps = {
+  attemptLogin,
+  logout,
+  approveLogin
+};
+
+const connector = connect(mapStateToProps, mapDispatchToProps); 
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+type AppProps = PropsFromRedux;
+
+
+function App(props: AppProps): ReactElement  {
+  //do it here, inject loggedIn and attemptLogin into the component 
+  //const [state, setState] = useState<IUserState>({loggedIn: false});
+  useEffect(() => {
+    const userDataString = localStorage.getItem("userData");
+    if (userDataString && !props.userData.isLoggedIn) {
+      const userData: IUserState = JSON.parse(userDataString); 
+      if (userData) {
+        props.approveLogin(userData);
+      }
+    }
+  });
   return (
     <>
-      <Navbar loggedIn={state.loggedIn} setLoggedIn={setState}/>
-      <Router className="router">  
-        <Home path="/"/>
-        <Signup path="/reg"/>
-        <ChatConfigure path="/chatconfig"/>
-        <RouteAuthorizer path="/chat" component={ChatBox} guarded={!state.loggedIn}/>
-      </Router>
-      {/* <Button variant="primary" onClick={() => {setState((state) => {return {loggedIn: !state.loggedIn};})}}>
-        {state.loggedIn ? "Logout" : "Login"}
-      </Button> */}
+        <Navbar loggedIn={props.userData.isLoggedIn} logout={props.logout} attemptLogin={props.attemptLogin}/>
+        <Router className="router">  
+          <Home path="/"/>
+          <Signup path="/reg"/>
+          <ChatConfigure path="/chatconfig"/>
+          <RouteAuthorizer path="/chat" component={ChatBox} guarded={!props.userData.isLoggedIn}/>
+          <RouteAuthorizer path="/friends" component={Friends} guarded={!props.userData.isLoggedIn}/>
+        </Router>
     </>
   );
 }
 
-export default App;
+export default connector(App);

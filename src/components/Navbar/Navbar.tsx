@@ -1,10 +1,9 @@
 import React, {useState, ReactElement} from "react";
 import {Navbar, Nav, Form, Col, Button} from "react-bootstrap";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faTimes} from "@fortawesome/free-solid-svg-icons";
 import {Link} from "@reach/router";
+
 import "../../scss/components/Navbar.scss";
-import {IUserState} from "../../App";
+import { logout } from "../../state/actions/User";
 
 interface INavbar {
     loginShown: boolean
@@ -12,17 +11,40 @@ interface INavbar {
 
 interface INavbarProps {
     loggedIn: boolean;
-    setLoggedIn: React.Dispatch<React.SetStateAction<IUserState>>;
+    attemptLogin: (login: INavbarLogin) => void;
+    logout: typeof logout; 
 }
+
+export interface INavbarLogin {
+    userName: string;
+    password: string; 
+}
+
+
 const ANavbar: React.FC<INavbarProps> = (props: INavbarProps) => {
     const [state, setState] = useState<INavbar>({loginShown: false});
-    
+    const [loginState, setLoginState] = useState<INavbarLogin>({userName: "", password: ""});
+
+    const onLoginChange = (e: any) => {
+        const name = e.target.name;
+        const value = e.target.value;
+        setLoginState((prev) => ({...prev, [name]: value}));
+    };
+
+    const onSubmit = (e: any) => {
+        e.preventDefault(); 
+        setLoginState({userName: "", password: ""});
+        props.attemptLogin(loginState);
+    };
+
+
+    //calculate the display 
     let innerLogin;
     const loggedIn = props.loggedIn;
     let loggedInLinks: ReactElement[] = []; 
 
     if (loggedIn) {
-        innerLogin = <Button onClick={() => props.setLoggedIn((prev) =>({...prev, loggedIn: !prev.loggedIn}))} variant="danger">Logout</Button>
+        innerLogin = <Button onClick={() => {localStorage.clear(); return props.logout();}} variant="danger">Logout</Button>
         loggedInLinks = [
                     (<Nav.Link className="text-white">
                         <Link to="/friends" className="text-white text-decoration-none">
@@ -38,20 +60,29 @@ const ANavbar: React.FC<INavbarProps> = (props: INavbarProps) => {
     } else {
         if (state.loginShown) {
             innerLogin = (
-                        <Form> 
+                        <Form onSubmit={onSubmit}> 
                             <Form.Row>
                                 {/* <div className="d-flex align-items-center ml-2">
                                     <FontAwesomeIcon className="text-white" size="lg" icon={faTimes}></FontAwesomeIcon>
                                 </div> */}
                                 <Col className="">
-                                    <Form.Control placeholder="Username">
+                                    <Form.Control 
+                                    name="userName"
+                                    onChange={onLoginChange}
+                                    value={loginState.userName}
+                                    placeholder="Username">
                                     </Form.Control>
                                 </Col>
                                 <Col className="">
-                                    <Form.Control placeholder="Password">
+                                    <Form.Control 
+                                    name="password"
+                                    onChange={onLoginChange}
+                                    value={loginState.password}
+                                    type="password"
+                                    placeholder="Password">
                                     </Form.Control>
                                 </Col>
-                                <Button className="mr-2" variant="primary" onClick={() => props.setLoggedIn((prev) => ({...prev, loggedIn: !prev.loggedIn}))}>Login</Button>
+                                <Button className="mr-2" variant="primary" type="submit">Login</Button>
                                 <Button variant="danger" onClick={() => setState((prev) => ({loginShown: !prev.loginShown}))}>Close</Button> 
                             </Form.Row>
                         </Form>
@@ -63,19 +94,16 @@ const ANavbar: React.FC<INavbarProps> = (props: INavbarProps) => {
         }
     }
 
-
     return (
-        <Navbar bg="dark" className="navbar" expand="md" fixed="top">
+        <Navbar bg="dark" className="navbar" expand="md">
             <Navbar.Brand className="text-primary">
                 <h1 className="display-5 navbar__logo">Connectum</h1>
             </Navbar.Brand>
             <Navbar.Toggle className="text-white" aria-controls="main-nav"/>
             <Navbar.Collapse id="main-nav">
                 <Nav className="ml-auto">
-                    <Nav.Link className="text-white">
-                        <Link to="/" className="text-white text-decoration-none">
-                            Home
-                        </Link>
+                    <Nav.Link className="uhjjkutext-white">
+                        <Link to="/" className="text-white text-decoration-none">Home</Link>
                     </Nav.Link>
                     <Nav.Link className="text-white">
                         <Link to="/chatconfig" className="text-white text-decoration-none">

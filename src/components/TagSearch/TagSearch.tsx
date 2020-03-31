@@ -1,10 +1,9 @@
 import React, {useState} from "react";
-import Autosuggest, { RenderInputComponent, GetSuggestionValue, RenderSuggestion, ChangeEvent, SuggestionsFetchRequested, SuggestionsFetchRequestedParams, OnSuggestionsClearRequested, RenderSuggestionsContainer, RenderSuggestionsContainerParams, InputProps } from "react-autosuggest";
-import { faSearchLocation } from "@fortawesome/free-solid-svg-icons";
+import Autosuggest, { RenderInputComponent, GetSuggestionValue, RenderSuggestion, ChangeEvent, SuggestionsFetchRequested, SuggestionsFetchRequestedParams, OnSuggestionsClearRequested, RenderSuggestionsContainer, RenderSuggestionsContainerParams, InputProps, RenderSuggestionParams } from "react-autosuggest";
 import { ListGroup, ListGroupItem, Form } from "react-bootstrap";
 import "../../scss/components/TagSearch.scss";
 
-interface ITagSuggestion {
+export interface ITagSuggestion {
     name: string; 
     category: string; 
 }
@@ -41,14 +40,16 @@ const getSuggestions = (search: string) => {
     suggestion.name.trim().toLowerCase().includes(search)); 
 }
 
-const renderSuggestion: RenderSuggestion<ITagSuggestion> = (suggestion: ITagSuggestion): React.ReactNode => {
+const renderSuggestion: RenderSuggestion<ITagSuggestion> = (suggestion: ITagSuggestion, params: RenderSuggestionParams): React.ReactNode => {
+    const query = params.query; 
+    const index = suggestion.name.indexOf(query); 
+    const render = <span>{suggestion.name.slice(0, index)}<span className="suggestion">{query}</span>{suggestion.name.slice(index + query.length)}</span>;
     return (
-    <ListGroupItem>{suggestion.name}</ListGroupItem>
+    <ListGroupItem className="listgroup-item">{render}</ListGroupItem>
     );
 }
 
 const renderSuggestionsContainer: RenderSuggestionsContainer = (params: RenderSuggestionsContainerParams): React.ReactNode => {
-    console.log(params.children);
     return (
         <ListGroup {...params.containerProps} className="tagsearch__suggestions">
             {params.children}
@@ -56,7 +57,6 @@ const renderSuggestionsContainer: RenderSuggestionsContainer = (params: RenderSu
     );
 }
 
-const getSuggestionValue: GetSuggestionValue<ITagSuggestion> = (suggestion: ITagSuggestion) => suggestion.name;
 
 const renderInputComponent = (inputProps: any) => {
     return (
@@ -65,9 +65,20 @@ const renderInputComponent = (inputProps: any) => {
     );
 }
 
-export default () => {
+interface ITagSearchProps {
+    selectTag: (tag: ITagSuggestion) => void; 
+}
+
+export default (props: ITagSearchProps) => {
 
     const [state, setState] = useState<ITagSearch>({searchValue: "", suggestions: tagSuggestions}); 
+
+    const getSuggestionValue: GetSuggestionValue<ITagSuggestion> = (suggestion: ITagSuggestion) => 
+    {
+        setState(prev => ({...prev, searchValue: ""}));
+        props.selectTag(suggestion);
+        return ""
+    };
 
     const onChange: (event: React.FormEvent<any>, params: ChangeEvent) => void = 
     (event: React.FormEvent<any>, {newValue}: ChangeEvent) => {
