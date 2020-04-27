@@ -1,0 +1,132 @@
+$chatMenu: darken(#15254E, 10%);
+$friend-menu: darken(#15254E, 15%);
+$primary: #15254E;
+
+.friends-chat {
+    width: 100%; 
+    height: 100%;
+    background: #15254E;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    left: 0;
+    position: absolute;
+    transition: all 0.5s linear;
+    &__toggle {
+        position: absolute;
+        left: 100vw;
+    }
+}
+
+.friends-chat__toolbar {
+    min-height: 60px;
+    width: 100%;
+    background: $chatMenu;
+}
+
+.friends-chat__chat {
+    flex: auto;
+    max-width: 100%;
+    overflow-y: scroll;
+    padding: 1rem;
+
+}
+
+.friends-chat__input {
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    min-height: 60px;
+    width: 100%;
+    background:$chatMenu;
+}
+
+.friends-chat__send {
+    margin-left: 0.5rem;
+}
+
+@media (min-width: 768px) { 
+
+    .friends-chat {
+        left: 300px;
+        width: 100%;
+        width: calc(100% - 300px);
+        position: relative;
+    }
+
+    .friends-toggle {
+        display: none; 
+    }
+}
+
+
+/*Start of manage friends */
+
+.manage-friends__toolbar {
+    display: flex; 
+    padding: 0 1rem;
+    align-items: center;
+    height: 100%;
+}
+
+.manage-friends__title {
+    padding: 0;
+    margin: 0;
+}
+
+.manage-friends__control {
+    color: lighten($primary, 10%);
+    cursor: pointer;
+    padding: 0rem 0.5rem;
+    border-radius: 5px;
+}
+
+.manage-friend__control--active {
+    background: lighten($friend-menu, 20%);
+    color: lighten($primary, 40%);
+}
+
+.manage-friend__control--friend {
+    color: white;
+    background: #05e486;
+}
+
+.manage-friend__control--friend-active {
+    color: white;
+    background: #039c5b;
+}
+
+/* Add friend styles*/
+
+.addfriend__divider {
+    width: 100%;
+    border: 1px solid #eee;
+}
+
+.userlist {
+    padding: 1rem 0;
+
+    &__user {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1.5rem 0rem;
+        // border-top: 1px solid $friend-menu;
+        border-bottom: 3px solid $friend-menu;
+    }
+
+    &__user-info {
+        display: flex;
+    }
+
+    &__pic {
+        width: 50px;
+        margin-right: 2rem;
+    }
+
+    &__name {
+        padding: 0;
+        margin: 0;
+        font-size: 1.5rem;
+    }
+}

@@ -11,7 +11,7 @@ import {RootStoreState} from "./state/store";
 import {attemptLogin, logout, IUserStatus, IUserState} from "./state/actions/User";
 import { connect, ConnectedProps } from 'react-redux';
 import {approveLogin} from "./state/actions/User";
-import {Friends} from "./pages/Friends/Friends";
+import {Friends, ConnectedFriends} from "./pages/Friends/Friends";
 
 const mapStateToProps = (state: RootStoreState) => {
   return ({
@@ -51,7 +51,7 @@ function App(props: AppProps): ReactElement  {
           <Signup path="/reg"/>
           <ChatConfigure path="/chatconfig"/>
           <RouteAuthorizer path="/chat" component={ChatBox} guarded={!props.userData.isLoggedIn}/>
-          <RouteAuthorizer path="/friends" component={Friends} guarded={!props.userData.isLoggedIn}/>
+          <RouteAuthorizer path="/friends/*" component={ConnectedFriends} guarded={!props.userData.isLoggedIn}/>
         </Router>
     </>
   );

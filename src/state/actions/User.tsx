@@ -5,14 +5,14 @@ import {RootStoreState} from "../store";
 import { Action } from "redux";
 
 export interface IUserState {
-    UserId: number; 
+    userId: number; 
     Name: string;
     UserName: string; 
     Email: string; 
     PublicName: boolean; 
     ProfilePic?: string;
     FriendList?: string; 
-    Token: string;   
+    token: string;   
 };
 
 export interface IUserStatus {

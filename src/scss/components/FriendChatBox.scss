@@ -1,0 +1,60 @@
+$chatMenu: darken(#15254E, 10%);
+$friend-menu: darken(#15254E, 15%);
+
+.friends-chat {
+    width: 100%; 
+    height: 100%;
+    background: #15254E;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    left: 0;
+    position: absolute;
+    transition: all 0.5s linear;
+    &__toggle {
+        position: absolute;
+        left: 100vw;
+    }
+}
+
+.friends-chat__toolbar {
+    min-height: 60px;
+    width: 100%;
+    background: $chatMenu;
+}
+
+.friends-chat__chat {
+    flex: auto;
+    max-width: 100%;
+    overflow-y: scroll;
+    padding: 1rem;
+
+}
+
+
+.friends-chat__input {
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    min-height: 60px;
+    width: 100%;
+    background:$chatMenu;
+}
+
+.friends-chat__send {
+    margin-left: 0.5rem;
+}
+
+@media (min-width: 768px) { 
+
+    .friends-chat {
+        left: 300px;
+        width: 100%;
+        width: calc(100% - 300px);
+        position: relative;
+    }
+
+    .friends-toggle {
+        display: none; 
+    }
+}
