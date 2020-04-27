@@ -48,9 +48,8 @@ $primary: #15254E;
 @media (min-width: 768px) { 
 
     .friends-chat {
-        left: 300px;
         width: 100%;
-        width: calc(100% - 300px);
+        width: calc(100%);
         position: relative;
     }
 

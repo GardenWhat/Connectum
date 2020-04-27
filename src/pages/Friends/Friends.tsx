@@ -9,13 +9,12 @@ import { RootStoreState } from "../../state/store";
 import { connect, ConnectedProps } from "react-redux";
 import axios from "axios"; 
 import FriendChatBox from "../../components/FriendChatBox/FriendChatBox";
-import { Router, Link } from "@reach/router";
+import { Router, Link, navigate } from "@reach/router";
 import ManageFriends from "../../components/ManageFriends/ManageFriends";
 import { IUserFrontEnd, IPendingFriend, getUserService, getIncomingFriendRequests, getOutgoingFriendRequests, getFriends } from "../../services/UserServices";
 import defaultProfilePic from "../../img/default-profile.png";
 import "../../scss/components/ManageFriends.scss";
-
-
+import * as signalR from "@microsoft/signalr";
 
 const mapStateToProps = (state: RootStoreState) => {
     return {
@@ -106,7 +105,13 @@ export const Friends = (props: FriendsProps) => {
 
     const [state2, setState2] = useState<boolean>(false); 
     useEffect(() => {
+
+
+
+
         if (!state2) {
+           
+
             console.log("in this sthing");
             fetchFriends();
             setState2(true); 
@@ -122,7 +127,9 @@ export const Friends = (props: FriendsProps) => {
                         </Form.Control>
                     </div>
                     <div className="friends-list__friends">
-                        <div className="friends-list__friend">
+                        <div className="friends-list__friend" onClick={() => {
+                            navigate("/friends/");
+                        }}>
                             <FontAwesomeIcon icon={faUserFriends} style={{marginRight: "0.5rem"}}></FontAwesomeIcon>Friends
                         </div>
                         <div className="friends-list__divider">
@@ -133,11 +140,15 @@ export const Friends = (props: FriendsProps) => {
                                 if (user.user1ID === userId) {
                                     const otherUser = state.users.find(us => us.userId === user.user2ID);
                                     return (
-                                        <div key={otherUser?.userId} className="friends-list__friend-profile">
-                                            <div className="userlist__user-info">
+                                        <div 
+                                        onClick={
+                                            () => {
+                                                navigate("/friends/chat");
+                                            }
+                                        }
+                                        key={otherUser?.userId} className="friends-list__friend-profile">
                                                 <img className="userlist__pic" src={defaultProfilePic} alt=""/>
                                                 <p className="">{otherUser?.userName}</p>
-                                            </div>
                                         </div>
                                     );
                                 } else {

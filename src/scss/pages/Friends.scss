@@ -102,11 +102,24 @@ $friend-menu: darken(#15254E, 15%);
     }
 }
 
-// .friends-list__friend-profile {
-//     padding: 0.5rem 0.5rem;
-//     display: flex;
-//     align-items: center;
-// }
+.friends-list__friend-profile {
+    padding: 0.5rem 0.5rem;
+    display: flex;
+    align-items: center;
+    img {
+        margin-right: 0.75rem;
+    }
+    p {
+        margin: 0;
+        padding: 0;
+    }
+
+    &:hover {
+        background: lighten($chatMenu, 5%);
+    }
+}
+
+
 
 .friends-list__profile {
     min-height: 60px;
@@ -127,14 +140,15 @@ $friend-menu: darken(#15254E, 15%);
 
     .friends-list {
         left: 0;
-        width: 400px;
-        min-width: 400px;
+        width: 300px;
+        min-width: 300px;
     }
 
-    .friends-chat {
-        left: 400px;
-        width: 100%;
-        width: calc(100% - 400px);
+    .friends-router {
+        left: 300px;
+        min-width: calc(100% - 300px);
+        width: calc(100% - 300px);
+        overflow: hidden;
         position: relative;
     }
 

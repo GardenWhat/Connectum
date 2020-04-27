@@ -93,7 +93,7 @@ interface IPendingList {
 
 const PendingList: React.FC<IPendingList> = (props: IPendingList) => {
     return (
-        <Container>
+        <Container fluid={true}>
             <div className="userlist">
                 <h5 className="userlist__title">Pending Friend Requests</h5>
                 {
@@ -157,7 +157,7 @@ interface IFriendsList {
 
 const FriendsList: React.FC<IFriendsList> = (props: IFriendsList) => {
     return (
-        <Container>
+        <Container fluid={true}>
             <div className="userlist">
                 <h5 className="userlist__title">Friends</h5>
                 {
@@ -205,7 +205,7 @@ interface IManageFriends {
 
 const ManageFriends: React.FC<RouteComponentProps<IManageFriends>> = (props: RouteComponentProps<IManageFriends>) => {
     const [state, setState] = useState<IManageFriendsState>(
-        {activeScreen: "online"});
+        {activeScreen: "all"});
 
 
     const fetchFriendData = props.fetchFriendData || (() => ""); 

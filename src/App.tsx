@@ -6,7 +6,7 @@ import Home from "./pages/Home/Home";
 import Signup from "./pages/Signup/Signup";
 import RouteAuthorizer from "./components/RouteAuthorizer/RouteAuthorizer";
 import "./App.scss";
-import ChatConfigure from './pages/ChatConfigure/ChatConfigure';
+import {ChatConfigure} from './pages/ChatConfigure/ChatConfigure';
 import {RootStoreState} from "./state/store";
 import {attemptLogin, logout, IUserStatus, IUserState} from "./state/actions/User";
 import { connect, ConnectedProps } from 'react-redux';
@@ -36,6 +36,9 @@ function App(props: AppProps): ReactElement  {
   //const [state, setState] = useState<IUserState>({loggedIn: false});
   useEffect(() => {
     const userDataString = localStorage.getItem("userData");
+
+
+
     if (userDataString && !props.userData.isLoggedIn) {
       const userData: IUserState = JSON.parse(userDataString); 
       if (userData) {
@@ -49,7 +52,7 @@ function App(props: AppProps): ReactElement  {
         <Router className="router">  
           <Home path="/"/>
           <Signup path="/reg"/>
-          <ChatConfigure path="/chatconfig"/>
+          <RouteAuthorizer path="/chatconfig" component={ChatConfigure} guarded={!props.userData.isLoggedIn}/>
           <RouteAuthorizer path="/chat" component={ChatBox} guarded={!props.userData.isLoggedIn}/>
           <RouteAuthorizer path="/friends/*" component={ConnectedFriends} guarded={!props.userData.isLoggedIn}/>
         </Router>

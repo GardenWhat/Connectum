@@ -17,3 +17,15 @@
         color: darken(white, 20%);
     }
 }
+
+.chatBox {
+    height: 70vh;
+    min-height: 70vh;
+    max-height: 70vh;
+    width: 100%;
+    overflow-y: auto;
+    color: white;
+    padding: 0.5rem;
+    margin: 0.5rem 0;
+    //border: 1px solid #333;
+}
